@@ -16,9 +16,8 @@ logging.getLogger("aiohttp").setLevel(logging.ERROR)
 logging.getLogger("aiohttp.web").setLevel(logging.ERROR)
 
 from pyrogram import Client
-from pyromod import listen
 from database.ia_filterdb import Media
-from Config import *
+from iron import API_ID, API_HASH, BOT_TOKEN
 from utils import temp
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types

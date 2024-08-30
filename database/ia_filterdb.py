@@ -11,12 +11,14 @@ from pymongo.errors import DuplicateKeyError
 from umongo import Instance, Document, fields
 from motor.motor_asyncio import AsyncIOMotorClient
 from marshmallow.exceptions import ValidationError
-from Config import DATABASE_URI, DATABASE_NAME, COLLECTION_NAME, USE_CAPTION_FILTER, MAX_B_TN
+from iron import DATABASE_URI, DATABASE_NAME, COLLECTION_NAME, config_dict
 from utils import get_settings, save_group_settings
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+USE_CAPTION_FILTER = config_dict['USE_CAPTION_FILTER']
+MAX_B_TN = config_dict['MAX_B_TN']
 
 client = AsyncIOMotorClient(DATABASE_URI)
 db = client[DATABASE_NAME]

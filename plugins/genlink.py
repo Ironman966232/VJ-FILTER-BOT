@@ -6,11 +6,14 @@ import re, os, json, base64, logging
 from utils import temp
 from pyrogram import filters, Client, enums
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified
-from Config import ADMINS, LOG_CHANNEL, FILE_STORE_CHANNEL, PUBLIC_FILE_STORE
+from iron import ADMINS, LOG_CHANNEL, config_dict
 from database.ia_filterdb import unpack_new_file_id
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+FILE_STORE_CHANNEL = config_dict['FILE_STORE_CHANNEL']
+PUBLIC_FILE_STORE = config_dict['PUBLIC_FILE_STORE']
 
 async def allowed(_, __, message):
     if PUBLIC_FILE_STORE:
@@ -41,7 +44,7 @@ async def gen_link_batch(bot, message):
     if len(links) != 3:
         return await message.reply("Use correct format.\nExample <code>/batch https://t.me/VJ_Botz/10 https://t.me/VJ_Botz/20</code>.")
     cmd, first, last = links
-    regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
+    regex = re.compile(r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
     match = regex.match(first)
     if not match:
         return await message.reply('Invalid link')

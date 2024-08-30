@@ -5,13 +5,15 @@
 import os, logging, time
 from pyrogram import Client, filters, enums
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant, MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
-from Config import IMDB_TEMPLATE
+from iron import config_dict
 from utils import extract_user, get_file_id, get_poster, last_online 
 from datetime import datetime
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
+
+IMDB_TEMPLATE = config_dict['IMDB_TEMPLATE']
 
 @Client.on_message(filters.command('id'))
 async def showid(client, message):

@@ -1,7 +1,7 @@
 import math
 import asyncio
 import logging
-from Config import *
+from iron import config_dict, LOG_CHANNEL
 from typing import Dict, Union
 from TechVJ.bot import work_loads
 from pyrogram import Client, utils, raw

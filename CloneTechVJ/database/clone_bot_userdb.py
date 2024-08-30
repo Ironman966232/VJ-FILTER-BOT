@@ -1,5 +1,5 @@
 import motor.motor_asyncio
-from Config import CLONE_DATABASE_URI, DATABASE_NAME
+from iron import CLONE_DATABASE_URI, DATABASE_NAME
 
 class Database:
     

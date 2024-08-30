@@ -1,5 +1,7 @@
 import motor.motor_asyncio
-from Config import AUTH_CHANNEL, DATABASE_URI
+from iron import config_dict, DATABASE_URI
+
+AUTH_CHANNEL = config_dict['AUTH_CHANNEL']
 
 class JoinReqs:
 

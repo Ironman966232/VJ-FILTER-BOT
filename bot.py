@@ -19,11 +19,11 @@ logging.basicConfig(
 logging.getLogger("aiohttp").setLevel(logging.ERROR)
 logging.getLogger("aiohttp.web").setLevel(logging.ERROR)
 
+import pyrogram
 from pyrogram import Client, idle 
-from pyromod import listen
 from database.ia_filterdb import Media
 from database.users_chats_db import db
-from Config import API_HASH, API_ID, LOG_CHANNEL, CLONE_MODE, LOG_STR, ON_HEROKU, PORT
+from iron import LOG_CHANNEL,LOG_STR, ON_HEROKU, PORT, CLONE_MODE
 from utils import temp
 from typing import Union, Optional, AsyncGenerator
 from Script import script 
@@ -39,13 +39,18 @@ from TechVJ.bot.clients import initialize_clients
 ppath = "plugins/*.py"
 files = glob.glob(ppath)
 TechVJBot.start()
-loop = asyncio.get_event_loop()
-
+bot_loop = asyncio.get_event_loop()
+logger = logging.getLogger(__name__)
 
 async def start():
     print('\n')
     print('Initalizing Your Bot')
-    bot_info = await TechVJBot.get_me()
+    while True:
+        try:
+            me = await TechVJBot.get_me()
+            break
+        except pyrogram.errors.exceptions.flood_420.FloodWait as e:
+            await asyncio.sleep(e.x)
     await initialize_clients()
     for name in files:
         with open(name) as a:
@@ -64,7 +69,6 @@ async def start():
     temp.BANNED_USERS = b_users
     temp.BANNED_CHATS = b_chats
     await Media.ensure_indexes()
-    me = await TechVJBot.get_me()
     temp.BOT = TechVJBot
     temp.ME = me.id
     temp.U_NAME = me.username
@@ -89,7 +93,6 @@ async def start():
 
 if __name__ == '__main__':
     try:
-        loop.run_until_complete(start())
+        bot_loop.run_until_complete(start())
     except KeyboardInterrupt:
         logging.info('Service Stopped Bye 👋')
-

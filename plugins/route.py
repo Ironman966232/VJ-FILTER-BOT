@@ -3,7 +3,7 @@
 # Ask Doubt on telegram @KingVJ01
 
 import re, math, logging, secrets, mimetypes, time
-from Config import *
+from iron import config_dict, MULTI_CLIENT
 from aiohttp import web
 from aiohttp.http_exceptions import BadStatusLine
 from TechVJ.bot import multi_clients, work_loads, TechVJBot

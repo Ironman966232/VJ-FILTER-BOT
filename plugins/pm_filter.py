@@ -5,7 +5,7 @@
 import os, logging, string, asyncio, time, re, ast, random, math, pytz, pyrogram
 from datetime import datetime, timedelta, date, time
 from Script import script
-from Config import *
+from iron import config_dict, CHANNELS,LOG_CHANNEL, YEARS, SEASONS, EPISODES, QUALITIES, LANGUAGES
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto, ChatPermissions, WebAppInfo
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
@@ -30,6 +30,42 @@ BUTTONS0 = {}
 BUTTONS1 = {}
 BUTTONS2 = {}
 SPELL_CHECK = {}
+
+CHANNELS = CHANNELS.split()
+CLONE_MODE = config_dict['CLONE_MODE']
+REQUEST_TO_JOIN_MODE = config_dict['REQUEST_TO_JOIN_MODE']
+TRY_AGAIN_BTN = config_dict['TRY_AGAIN_BTN']
+ADMINS = config_dict['ADMINS']
+SHORTLINK_MODE = config_dict['SHORTLINK_MODE']
+PREMIUM_AND_REFERAL_MODE = config_dict['PREMIUM_AND_REFERAL_MODE']
+STREAM_MODE = config_dict['STREAM_MODE']
+AUTH_CHANNEL = config_dict['AUTH_CHANNEL']
+OWNER_USERNAME = config_dict['OWNER_USERNAME']
+REFERAL_PREMEIUM_TIME = config_dict['REFERAL_PREMEIUM_TIME']
+REFERAL_COUNT = config_dict['REFERAL_COUNT']
+PAYMENT_TEXT = config_dict['PAYMENT_TEXT']
+PAYMENT_QR = config_dict['PAYMENT_QR']
+PICS = config_dict['PICS'].split()
+BATCH_FILE_CAPTION = config_dict['BATCH_FILE_CAPTION']
+CUSTOM_FILE_CAPTION = config_dict['CUSTOM_FILE_CAPTION']
+PROTECT_CONTENT = config_dict['PROTECT_CONTENT']
+CHNL_LNK = config_dict['CHNL_LNK']
+GRP_LNK = config_dict['GRP_LNK']
+REQST_CHANNEL = config_dict['REQST_CHANNEL']
+SUPPORT_CHAT_ID = config_dict['SUPPORT_CHAT_ID']
+SUPPORT_CHAT = config_dict['SUPPORT_CHAT']
+MAX_B_TN = config_dict['MAX_B_TN']
+VERIFY = config_dict['VERIFY']
+SHORTLINK_API = config_dict['SHORTLINK_API']
+SHORTLINK_URL = config_dict['SHORTLINK_URL']
+TUTORIAL = config_dict['TUTORIAL']
+VERIFY_TUTORIAL = config_dict['VERIFY_TUTORIAL']
+IS_TUTORIAL = config_dict['IS_TUTORIAL']
+URL = config_dict['URL']
+PM_SEARCH = config_dict['PM_SEARCH']
+NO_RESULTS_MSG = config_dict['NO_RESULTS_MSG']
+MSG_ALRT = config_dict['MSG_ALRT']
+AI_SPELL_CHECK = ['AI_SPELL_CHECK']
 
 @Client.on_message(filters.group & filters.text & filters.incoming)
 async def give_filter(client, message):
@@ -2731,7 +2767,7 @@ async def auto_filter(client, name, msg, reply_msg, ai_search, spoll=False):
     if not spoll:
         message = msg
         if message.text.startswith("/"): return  # ignore commands
-        if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
+        if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
             return
         if len(message.text) < 100:
             search = name

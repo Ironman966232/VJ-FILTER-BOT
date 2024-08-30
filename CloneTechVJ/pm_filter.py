@@ -7,7 +7,7 @@
 import os, logging, string, asyncio, time, re, ast, random, math, pytz, pyrogram
 from datetime import datetime, timedelta, date, time
 from Script import script
-from Config import *
+from iron import config_dict, YEARS, LANGUAGES, SEASONS, QUALITIES, EPISODES
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto, ChatPermissions, WebAppInfo
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
@@ -27,6 +27,8 @@ BUTTONS0 = {}
 BUTTONS1 = {}
 BUTTONS2 = {}
 SPELL_CHECK = {}
+
+MAX_B_TN = config_dict['MAX_B_TN']
 
 @Client.on_message(filters.group & filters.text & filters.incoming)
 async def give_filter(client, message):
@@ -688,7 +690,7 @@ async def filter_qualities_cb_handler(client: Client, query: CallbackQuery):
     except:
         pass
     searchagain = search
-    if lang != "homepage":
+    if qual != "homepage":
         search = f"{search} {qual}" 
     BUTTONS[key] = search
 
@@ -829,7 +831,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
     
     elif query.data.startswith("send_fsall"):
         temp_var, ident, key, offset = query.data.split("#")
-        search = BUTTON0.get(key)
+        search = BUTTONS0.get(key)
         if not search:
             await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name),show_alert=True)
             return

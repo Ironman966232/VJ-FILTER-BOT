@@ -2,8 +2,10 @@ import asyncio
 import logging
 import aiohttp
 import traceback
-from Config import *
+from iron import config_dict
 
+PING_INTERVAL = config_dict['PING_INTERVAL']
+URL = config_dict['URL']
 
 async def ping_server():
     sleep_time = PING_INTERVAL

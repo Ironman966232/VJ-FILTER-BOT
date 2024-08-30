@@ -3,7 +3,7 @@
 # Ask Doubt on telegram @KingVJ01
 
 import logging, asyncio, os, re, random, pytz, aiohttp, requests, string, json, http.client
-from Config import *
+from iron import config_dict, LOG_CHANNEL
 from imdb import Cinemagoer 
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import enums
@@ -47,6 +47,22 @@ class temp(object):
     SETTINGS = {}
     IMDB_CAP = {}
 
+REQUEST_TO_JOIN_MODE = config_dict['REQUEST_TO_JOIN_MODE']
+AUTH_CHANNEL = config_dict['AUTH_CHANNEL']
+LONG_IMDB_DESCRIPTION = config_dict['LONG_IMDB_DESCRIPTION']
+SHORTLINK_URL = config_dict['SHORTLINK_URL']
+SHORTLINK_API = config_dict['SHORTLINK_API']
+TUTORIAL = config_dict['TUTORIAL']
+MAX_LIST_ELM = config_dict['MAX_LIST_ELM']
+VERIFY_SECOND_SHORTNER = config_dict['VERIFY_SECOND_SHORTNER']
+VERIFY_SHORTLINK_URL = config_dict['VERIFY_SHORTLINK_URL']
+VERIFY_SHORTLINK_API = config_dict['VERIFY_SHORTLINK_API']
+VERIFY_SND_SHORTLINK_URL = config_dict['VERIFY_SND_SHORTLINK_URL']
+VERIFY_SND_SHORTLINK_API = config_dict['VERIFY_SND_SHORTLINK_API']
+SHORTLINK_MODE = config_dict['SHORTLINK_MODE']
+CUSTOM_FILE_CAPTION = config_dict['CUSTOM_FILE_CAPTION']
+GRP_LNK = config_dict['GRP_LNK']
+CHNL_LNK = config_dict['CHNL_LNK']
 
 async def pub_is_subscribed(bot, query, channel):
     btn = []
@@ -610,6 +626,7 @@ async def check_verification(bot, userid):
     
 async def send_all(bot, userid, files, ident, chat_id, user_name, query):
     settings = await get_settings(chat_id)
+    message = query.message
     if 'is_shortlink' in settings.keys():
         ENABLE_SHORTLINK = settings['is_shortlink']
     else:

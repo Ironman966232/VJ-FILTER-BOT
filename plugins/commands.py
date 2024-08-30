@@ -10,7 +10,7 @@ from pyrogram.types import *
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id, get_bad_files
 from database.users_chats_db import db, delete_all_referal_users, get_referal_users_count, get_referal_all_users, referal_add_user
 from database.join_reqs import JoinReqs
-from Config import config_dict, LOG_CHANNEL, CHANNELS
+from iron import config_dict, LOG_CHANNEL, CHANNELS, ADMINS
 from utils import get_settings, pub_is_subscribed, get_size, is_subscribed, save_group_settings, temp, verify_user, check_token, check_verification, get_token, get_shortlink, get_tutorial, get_seconds
 from database.connections_mdb import active_connection
 from urllib.parse import quote_plus
@@ -24,7 +24,7 @@ CHANNELS = CHANNELS.split()
 CLONE_MODE = config_dict['CLONE_MODE']
 REQUEST_TO_JOIN_MODE = config_dict['REQUEST_TO_JOIN_MODE']
 TRY_AGAIN_BTN = config_dict['TRY_AGAIN_BTN']
-ADMINS = config_dict['ADMINS']
+
 SHORTLINK_MODE = config_dict['SHORTLINK_MODE']
 PREMIUM_AND_REFERAL_MODE = config_dict['PREMIUM_AND_REFERAL_MODE']
 STREAM_MODE = config_dict['STREAM_MODE']

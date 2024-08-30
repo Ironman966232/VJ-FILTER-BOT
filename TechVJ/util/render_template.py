@@ -1,5 +1,5 @@
 import jinja2
-from Config import *
+from iron import config_dict, LOG_CHANNEL
 from TechVJ.bot import TechVJBot
 from TechVJ.util.human_readable import humanbytes
 from TechVJ.util.file_properties import get_file_ids
@@ -8,6 +8,7 @@ import urllib.parse
 import logging
 import aiohttp
 
+URL = config_dict['URL']
 
 async def render_page(id, secure_hash, src=None):
     file = await TechVJBot.get_messages(int(LOG_CHANNEL), int(id))

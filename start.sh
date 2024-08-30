@@ -1,1 +1,1 @@
-python3 -m Config & python3 bot.py
+python3 -m bot & python3 bot.py

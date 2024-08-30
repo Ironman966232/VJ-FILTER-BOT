@@ -19,12 +19,13 @@ from time import time
 from io import BytesIO
 from dotenv import dotenv_values
 from pymongo.errors import PyMongoError
-from motor.motor_asyncio import AsyncIOMotorClient
 from traceback import format_exc
+from database.db_handler import DbManager
 
-from Config import config_dict, DATABASE_URI, download_dict, status_reply_dict_lock, Interval, bot_id, ADMINS
+from TechVJ.bot import TechVJBot
+from iron import config_dict, DATABASE_URI, download_dict, status_reply_dict_lock, Interval, bot_id, ADMINS
 from Script import script
-
+from bot import bot_loop
 
 getLogger("pyrogram").setLevel(ERROR)
 getLogger("aiohttp").setLevel(ERROR)
@@ -36,7 +37,6 @@ START = 0
 STATE = 'view'
 handler_dict = {}
 id_pattern = re.compile(r'^.\d+$')
-#loop = asyncio.get_event_loop()
 
 default_values = {
     'SESSION ': 'TechVJBot',
@@ -89,42 +89,6 @@ bset_display_dict = {'AUTH_CHANNEL': 'Fill chat_id(-100xxxxxx) of groups/channel
                 'API_ID': 'This is to authenticate your Telegram account for downloading Telegram files. You can get this from https://my.telegram.org.',
                 'API_HASH': 'This is to authenticate your Telegram account for downloading Telegram files. You can get this from https://my.telegram.org.',
 }
-
-class DbManager:
-    def __init__(self):
-        self.__err = False
-        self.__db = None
-        self.__conn = None
-        self.__connect()
-
-    def __connect(self):
-        try:
-            self.__conn = AsyncIOMotorClient(DATABASE_URI)
-            self.__db = self.__conn.luna
-        except PyMongoError as e:
-            LOGGER.error(f"Error in DB connection: {e}")
-            self.__err = True
-
-    async def db_load(self):
-        if self.__err:
-            return
-        await self.__db.settings.config.update_one(
-            {"_id": bot_id}, {"$set": config_dict}, upsert=True
-        )
-        self.__conn.close
-
-    async def update_config(self, dict_):
-        if self.__err:
-            return
-        await self.__db.settings.config.update_one(
-            {"_id": bot_id}, {"$set": dict_}, upsert=True
-        )
-        self.__conn.close
-
-if DATABASE_URI:
-    async def db_loder():
-        await DbManager().db_load()
-
 
 async def load_config():
 
@@ -589,10 +553,6 @@ async def get_buttons(key=None, edit_type=None, edit_mode=None, mess=None):
                 f"{int(x/10)+1}", f"botset start var {x}", position="footer"
             )
         msg = f"<b>Config Variables<b> | Page: {int(START/10)+1}"
-    elif key == "private":
-        buttons.callback("Back", "botset back")
-        buttons.callback("Close", "botset close")
-        msg = "Send private files: config.env, token.pickle, cookies.txt, accounts.zip, terabox.txt, .netrc, or any other files!\n\nTo delete a private file, send only the file name as a text message.\n\n<b>Please note:</b> Changes to .netrc will not take effect for aria2c until it's restarted.\n\n<b>Timeout:</b> 60 seconds"
     elif edit_type == "editvar":
         msg = f"<b>Variable:</b> <code>{key}</code>\n\n"
         msg += f'<b>Description:</b> {bset_display_dict.get(key, "No Description Provided")}\n\n'
@@ -659,7 +619,9 @@ async def update_buttons(message, key=None, edit_type=None, edit_mode=None):
     msg, button = await get_buttons(key, edit_type, edit_mode, message)
     await editMessage(message, msg, button)
 
-async def edit_variable(_, message, pre_message, key):
+
+async def edit_variable(_, message: Message, pre_message, key):
+    print("edit_variable")
     handler_dict[message.chat.id] = False
     value = message.text
     if key == "LOG_CHANNEL":
@@ -713,9 +675,20 @@ async def sendFile(message, file, caption=None, buttons=None):
         return str(e)
 
 
+def new_thread(func):
+    @wraps(func)
+    def wrapper(*args, wait=False, **kwargs):
+        future = run_coroutine_threadsafe(func(*args, **kwargs), bot_loop)
+        return future.result() if wait else future
+
+    return wrapper
+
+@new_thread
 async def edit_bot_settings(client, query):
     data = query.data.split()
     message = query.message
+    print(f"B:- DATA= {data}")
+    print(f"MESSAGE= {message}")
     if data[1] == "close":
         handler_dict[message.chat.id] = False
         await query.answer()
@@ -753,6 +726,7 @@ async def edit_bot_settings(client, query):
             await DbManager().update_config({data[2]: value})
     elif data[1] == "editvar":
         handler_dict[message.chat.id] = False
+        print(handler_dict[message.chat.id])
         await query.answer()
         edit_mode = len(data) == 4
         await update_buttons(message, data[2], data[1], edit_mode)

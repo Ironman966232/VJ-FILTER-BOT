@@ -4,11 +4,11 @@
 
 import logging, re, asyncio
 from utils import temp
-from Config import ADMINS
+from iron import ADMINS
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, ChatAdminRequired, UsernameInvalid, UsernameNotModified
-from Config import INDEX_REQ_CHANNEL as LOG_CHANNEL
+from iron import INDEX_REQ_CHANNEL as LOG_CHANNEL
 from database.ia_filterdb import save_file
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -55,7 +55,7 @@ async def index_files(bot, query):
 async def send_for_index(bot, message):
     vj = await bot.ask(message.chat.id, "**Now Send Me Your Channel Last Post Link Or Forward A Last Message From Your Index Channel.**")
     if vj.text:
-        regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
+        regex = re.compile(r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
         match = regex.match(vj.text)
         if not match:
             return await vj.reply('Invalid link\n\nTry again by /index')

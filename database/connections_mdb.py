@@ -4,7 +4,7 @@
 
 import pymongo
 
-from Config import DATABASE_URI, DATABASE_NAME
+from iron import DATABASE_URI, DATABASE_NAME
 
 import logging
 logger = logging.getLogger(__name__)
