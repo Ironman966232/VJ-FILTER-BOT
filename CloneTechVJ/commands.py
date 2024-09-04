@@ -12,10 +12,13 @@ from pyrogram.types import *
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id, get_bad_files
 from database.users_chats_db import db
 from CloneTechVJ.database.clone_bot_userdb import clonedb
-from info import *
+from executor import config_dict
 from shortzy import Shortzy
 from utils import get_size, temp, get_seconds, get_clone_shortlink
 logger = logging.getLogger(__name__)
+
+PUBLIC_FILE_CHANNEL = config_dict['PUBLIC_FILE_CHANNEL']
+
 
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):

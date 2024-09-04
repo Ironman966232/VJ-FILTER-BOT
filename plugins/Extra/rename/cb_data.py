@@ -13,15 +13,14 @@ import humanize
 from PIL import Image
 import time
 import logging
-logger = logging.getLogger(__name__)
+
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
+logger = logging.getLogger(__name__)
 
 @Client.on_callback_query(filters.regex('cancel'))
 async def cancel(bot,update):
-	try:
-           await update.message.delete()
-	except:
-           return
+	await update.message.delete()
+	
 
 @Client.on_callback_query(filters.regex('rename'))
 async def rename(bot,update):

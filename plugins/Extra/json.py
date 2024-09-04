@@ -28,7 +28,7 @@ async def jsonify(_, message):
             caption=str(e),
             disable_notification=True,
             quote=True,
-            reply_markup=reply_markup
+            reply_markup=pk
         )            
         os.remove("json.text")
 

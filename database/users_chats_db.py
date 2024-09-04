@@ -6,9 +6,27 @@ import re
 from pymongo.errors import DuplicateKeyError
 import motor.motor_asyncio
 from pymongo import MongoClient
-from info import DATABASE_NAME, DATABASE_URI, CUSTOM_FILE_CAPTION, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT, AUTO_DELETE, MAX_BTN, AUTO_FFILTER, SHORTLINK_API, SHORTLINK_URL, IS_SHORTLINK, TUTORIAL, IS_TUTORIAL
+from executor import DATABASE_NAME, DATABASE_URI, config_dict
 import time
 import datetime
+
+
+CUSTOM_FILE_CAPTION = config_dict['CUSTOM_FILE_CAPTION']
+IMDB = config_dict['IMDB']
+IMDB_TEMPLATE = config_dict['IMDB_TEMPLATE']
+MELCOW_NEW_USERS = config_dict['MELCOW_NEW_USERS']
+P_TTI_SHOW_OFF = config_dict['P_TTI_SHOW_OFF']
+SINGLE_BUTTON = config_dict['SINGLE_BUTTON']
+SPELL_CHECK_REPLY = config_dict['SPELL_CHECK_REPLY']
+PROTECT_CONTENT = config_dict['PROTECT_CONTENT']
+AUTO_DELETE = config_dict['AUTO_DELETE']
+MAX_BTN = config_dict['MAX_BTN']
+AUTO_FFILTER = config_dict['AUTO_FFILTER']
+SHORTLINK_API = config_dict['SHORTLINK_API']
+SHORTLINK_URL = config_dict['SHORTLINK_URL']
+IS_SHORTLINK = config_dict['IS_SHORTLINK']
+TUTORIAL = config_dict['TUTORIAL']
+IS_TUTORIAL = config_dict['IS_TUTORIAL']
 
 my_client = MongoClient(DATABASE_URI)
 mydb = my_client["referal_user"]
@@ -314,4 +332,4 @@ class Database:
         return user.get('save', False) 
     
 
-db = Database(DATABASE_URI, DATABASE_NAME)
+db = Database(DATABASE_URI,DATABASE_NAME)

@@ -9,10 +9,10 @@ import os, requests, asyncio, math, time, wget
 from pyrogram import filters, Client
 from pyrogram.types import Message
 
-from youtube_search import YoutubeSearch
+from youtubesearchpython import search
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
-
+from typing import Optional
 
 @Client.on_message(filters.command(['song', 'mp3']) & filters.private)
 async def song(client, message):
@@ -26,7 +26,7 @@ async def song(client, message):
     m = await message.reply(f"**ѕєαrchíng чσur ѕσng...!\n {query}**")
     ydl_opts = {"format": "bestaudio[ext=m4a]"}
     try:
-        results = YoutubeSearch(query, max_results=1).to_dict()
+        results = search(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
         title = results[0]["title"][:40]       
         thumbnail = results[0]["thumbnails"][0]
@@ -72,7 +72,7 @@ async def song(client, message):
     except Exception as e:
         print(e)
 
-def get_text(message: Message) -> [None,str]:
+def get_text(message: Message) -> Optional[str]:
     text_to_return = message.text
     if message.text is None:
         return None

@@ -22,8 +22,7 @@ logging.getLogger("aiohttp.web").setLevel(logging.ERROR)
 from pyrogram import Client, idle 
 from pyromod import listen
 from database.ia_filterdb import Media
-from database.users_chats_db import db
-from info import *
+from executor import *
 from utils import temp
 from typing import Union, Optional, AsyncGenerator
 from Script import script 
@@ -40,6 +39,11 @@ ppath = "plugins/*.py"
 files = glob.glob(ppath)
 TechVJBot.start()
 loop = asyncio.get_event_loop()
+
+def user_db_call():
+    from database.users_chats_db import db
+    return db
+
 
 
 async def start():
@@ -60,7 +64,7 @@ async def start():
             print("Tech VJ Imported => " + plugin_name)
     if ON_HEROKU:
         asyncio.create_task(ping_server())
-    b_users, b_chats = await db.get_banned()
+    b_users, b_chats = await user_db_call().get_banned()
     temp.BANNED_USERS = b_users
     temp.BANNED_CHATS = b_chats
     await Media.ensure_indexes()

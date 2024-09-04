@@ -6,8 +6,11 @@ import re, os, json, base64, logging
 from utils import temp
 from pyrogram import filters, Client, enums
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified
-from info import ADMINS, LOG_CHANNEL, FILE_STORE_CHANNEL, PUBLIC_FILE_STORE
+from executor import ADMINS, LOG_CHANNEL, config_dict
 from database.ia_filterdb import unpack_new_file_id
+
+FILE_STORE_CHANNEL = config_dict['FILE_STORE_CHANNEL']
+PUBLIC_FILE_STORE = config_dict['PUBLIC_FILE_STORE']
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
